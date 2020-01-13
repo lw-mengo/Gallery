@@ -79,7 +79,7 @@ public class GalleryAdapter extends ListAdapter<Pixabay.HitsBean, GalleryAdapter
         }
     }
 
-    static final DiffUtil.ItemCallback<Pixabay.HitsBean> DIFF_CALLBACK = new DiffUtil.ItemCallback<Pixabay.HitsBean>() {
+    private static final DiffUtil.ItemCallback<Pixabay.HitsBean> DIFF_CALLBACK = new DiffUtil.ItemCallback<Pixabay.HitsBean>() {
         @Override
         public boolean areItemsTheSame(@NonNull Pixabay.HitsBean oldItem, @NonNull Pixabay.HitsBean newItem) {
             return oldItem == newItem;

@@ -14,10 +14,22 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PiaxbayRepository {
+    private static PiaxbayRepository instance;
 
-    private final static String[] keywords_random = {"cat", "car", "bus", "sky", "girl", "beauty", "animal"};
+    public static PiaxbayRepository getInstance() {
+        if (instance == null) {
+            synchronized (PiaxbayRepository.class) {
+                if (instance == null) {
+                    instance = new PiaxbayRepository();
+                }
+            }
+        }
+        return instance;
+    }
 
-    public static MutableLiveData<Pixabay> fetchData() {
+    private String[] keywords_random = {"cat", "car", "bus", "sky", "girl", "beauty", "animal"};
+
+    public MutableLiveData<Pixabay> fetchData() {
         Random random = new Random();
         int num = random.nextInt(keywords_random.length);
         String keywords = keywords_random[num];
@@ -26,7 +38,6 @@ public class PiaxbayRepository {
             @Override
             public void onResponse(Call<Pixabay> call, Response<Pixabay> response) {
                 data.setValue(response.body());
-                Log.d("info", "onResponse: " +data.getValue().getTotal());
             }
 
             @Override
