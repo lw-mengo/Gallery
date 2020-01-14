@@ -14,17 +14,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PiaxbayRepository {
-    private static PiaxbayRepository instance;
 
     public static PiaxbayRepository getInstance() {
-        if (instance == null) {
-            synchronized (PiaxbayRepository.class) {
-                if (instance == null) {
-                    instance = new PiaxbayRepository();
-                }
-            }
-        }
-        return instance;
+        return new PiaxbayRepository();
     }
 
     private String[] keywords_random = {"cat", "car", "bus", "sky", "girl", "beauty", "animal"};
@@ -37,7 +29,7 @@ public class PiaxbayRepository {
         RetrofitUtil.getInstance().getService().fetchData(keywords).enqueue(new Callback<Pixabay>() {
             @Override
             public void onResponse(Call<Pixabay> call, Response<Pixabay> response) {
-                data.setValue(response.body());
+                data.postValue(response.body());
             }
 
             @Override

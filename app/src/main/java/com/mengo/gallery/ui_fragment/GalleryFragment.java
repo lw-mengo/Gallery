@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -50,14 +51,13 @@ public class GalleryFragment extends Fragment {
         recyclerView.setAdapter(galleryAdapter);
 
         mViewModel.getData().observe(this, pixabay -> {
-            Log.d("my_log", "onChanged: " + pixabay.getTotal());
+//            Log.d("my_log", "onChanged: " + pixabay.getTotal());
             galleryAdapter.submitList(pixabay.getHits());
             swipeRefreshLayout.setRefreshing(false);
         });
 
-
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            mViewModel.fetchData();
+            mViewModel.getData();
 
         });
     }
