@@ -1,24 +1,16 @@
 package com.mengo.gallery.ui_fragment;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mengo.gallery.beans.Pixabay;
-import com.mengo.gallery.httpUtil.RetrofitUtil;
-import com.mengo.gallery.repository.PiaxbayRepository;
+import com.mengo.gallery.httpUtil.DataCallback;
+import com.mengo.gallery.repository.PixabayRepository;
 
-import java.util.Random;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class GalleryViewModel extends AndroidViewModel {
+public class GalleryViewModel extends AndroidViewModel implements DataCallback<Pixabay> {
     public GalleryViewModel(@NonNull Application application) {
         super(application);
     }
@@ -26,23 +18,29 @@ public class GalleryViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
     private MutableLiveData<Pixabay> data;
 
-    private String[] keywords_random = {"cat", "car", "bus", "sky", "girl", "beauty", "animal"};
-
+    //    private String[] keywords_random = {"cat", "car", "bus", "sky", "girl", "beauty", "animal"};
+//
     public MutableLiveData<Pixabay> getData() {
-        String TAG = "bug_";
         if (data == null) {
-            Log.d(TAG, "getData::::::this method executed!!! ");
             data = new MutableLiveData<>();
-            fetchData();
-        }
-        else {
             fetchData();
         }
         return data;
     }
 
+    //
     public void fetchData() {
-        this.data = PiaxbayRepository.getInstance().fetchData();
+        PixabayRepository.getInstance().fetchData(this);
+    }
+
+    @Override
+    public void success(Pixabay pixabay) {
+        this.data.setValue(pixabay);
+    }
+
+    @Override
+    public void failed(String result) {
+
     }
 
 //    public MutableLiveData<Pixabay> fetchData() {

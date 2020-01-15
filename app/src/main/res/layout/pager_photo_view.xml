@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.supercharge.shimmerlayout.ShimmerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/shimmerLayout_photo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui_fragment.PhotoFragment">
+    android:orientation="vertical">
 
     <uk.co.senab.photoview.PhotoView
-        android:id="@+id/pager_photo"
+        android:id="@+id/pager_photo_view_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        tools:src="@tools:sample/avatars" />
-</io.supercharge.shimmerlayout.ShimmerLayout>
+        android:contentDescription="@string/img_content"
+        tools:srcCompat="@tools:sample/avatars" />
+</LinearLayout>

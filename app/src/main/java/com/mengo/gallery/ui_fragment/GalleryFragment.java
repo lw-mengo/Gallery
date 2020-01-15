@@ -3,13 +3,15 @@ package com.mengo.gallery.ui_fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,7 +20,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mengo.gallery.R;
 import com.mengo.gallery.adapter.GalleryAdapter;
-import com.mengo.gallery.repository.PiaxbayRepository;
 
 public class GalleryFragment extends Fragment {
 
@@ -44,6 +45,7 @@ public class GalleryFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
         mViewModel = ViewModelProviders.of(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(GalleryViewModel.class);
         // TODO: Use the ViewModel
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
@@ -51,15 +53,29 @@ public class GalleryFragment extends Fragment {
         recyclerView.setAdapter(galleryAdapter);
 
         mViewModel.getData().observe(this, pixabay -> {
-//            Log.d("my_log", "onChanged: " + pixabay.getTotal());
             galleryAdapter.submitList(pixabay.getHits());
             swipeRefreshLayout.setRefreshing(false);
         });
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            mViewModel.getData();
+        swipeRefreshLayout.setOnRefreshListener(() ->
+                mViewModel.fetchData()
+        );
 
-        });
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.gallery_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.swipe_refresh) {
+            swipeRefreshLayout.setRefreshing(true);
+            mViewModel.fetchData();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

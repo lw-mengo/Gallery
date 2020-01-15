@@ -1,10 +1,7 @@
 package com.mengo.gallery.repository;
 
-import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
-
 import com.mengo.gallery.beans.Pixabay;
+import com.mengo.gallery.httpUtil.DataCallback;
 import com.mengo.gallery.httpUtil.RetrofitUtil;
 
 import java.util.Random;
@@ -13,31 +10,31 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PiaxbayRepository {
+public class PixabayRepository {
 
-    public static PiaxbayRepository getInstance() {
-        return new PiaxbayRepository();
+    public static PixabayRepository getInstance() {
+        return new PixabayRepository();
     }
 
     private String[] keywords_random = {"cat", "car", "bus", "sky", "girl", "beauty", "animal"};
 
-    public MutableLiveData<Pixabay> fetchData() {
+    public void fetchData(DataCallback<Pixabay> pixabayDataCallback) {
         Random random = new Random();
         int num = random.nextInt(keywords_random.length);
         String keywords = keywords_random[num];
-        MutableLiveData<Pixabay> data = new MutableLiveData<>();
+
         RetrofitUtil.getInstance().getService().fetchData(keywords).enqueue(new Callback<Pixabay>() {
             @Override
             public void onResponse(Call<Pixabay> call, Response<Pixabay> response) {
-                data.postValue(response.body());
+                pixabayDataCallback.success(response.body());
             }
 
             @Override
             public void onFailure(Call<Pixabay> call, Throwable t) {
-                Log.d("error", "onFailure: " + t.toString());
+                pixabayDataCallback.failed(t.toString());
             }
         });
-        return data;
+
     }
 
 }

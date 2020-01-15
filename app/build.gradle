@@ -20,6 +20,8 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+
+
 }
 
 dependencies {
@@ -53,6 +55,7 @@ dependencies {
     implementation 'io.supercharge:shimmerlayout:2.1.0'
 
     implementation 'com.github.chrisbanes.photoview:library:1.2.4'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
 
 }

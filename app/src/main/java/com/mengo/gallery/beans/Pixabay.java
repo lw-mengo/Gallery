@@ -1,8 +1,11 @@
 package com.mengo.gallery.beans;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Pixabay {
+public class Pixabay implements Parcelable {
 
     /**
      * totalHits : 500
@@ -13,6 +16,36 @@ public class Pixabay {
     private int totalHits;
     private int total;
     private List<HitsBean> hits;
+
+    protected Pixabay(Parcel in) {
+        totalHits = in.readInt();
+        total = in.readInt();
+        hits = in.createTypedArrayList(HitsBean.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(totalHits);
+        dest.writeInt(total);
+        dest.writeTypedList(hits);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Pixabay> CREATOR = new Creator<Pixabay>() {
+        @Override
+        public Pixabay createFromParcel(Parcel in) {
+            return new Pixabay(in);
+        }
+
+        @Override
+        public Pixabay[] newArray(int size) {
+            return new Pixabay[size];
+        }
+    };
 
     public int getTotalHits() {
         return totalHits;
@@ -38,7 +71,7 @@ public class Pixabay {
         this.hits = hits;
     }
 
-    public static class HitsBean {
+    public static class HitsBean implements Parcelable {
         /**
          * largeImageURL : https://pixabay.com/get/55e0d340485aa814f6da8c7dda79367a1d36dbe752516c48702873dc9e4ec35cb1_1280.jpg
          * webformatHeight : 426
@@ -86,6 +119,74 @@ public class Pixabay {
         private int previewWidth;
         private String userImageURL;
         private String previewURL;
+
+        protected HitsBean(Parcel in) {
+            largeImageURL = in.readString();
+            webformatHeight = in.readInt();
+            webformatWidth = in.readInt();
+            likes = in.readInt();
+            imageWidth = in.readInt();
+            id = in.readInt();
+            user_id = in.readInt();
+            views = in.readInt();
+            comments = in.readInt();
+            pageURL = in.readString();
+            imageHeight = in.readInt();
+            webformatURL = in.readString();
+            type = in.readString();
+            previewHeight = in.readInt();
+            tags = in.readString();
+            downloads = in.readInt();
+            user = in.readString();
+            favorites = in.readInt();
+            imageSize = in.readInt();
+            previewWidth = in.readInt();
+            userImageURL = in.readString();
+            previewURL = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(largeImageURL);
+            dest.writeInt(webformatHeight);
+            dest.writeInt(webformatWidth);
+            dest.writeInt(likes);
+            dest.writeInt(imageWidth);
+            dest.writeInt(id);
+            dest.writeInt(user_id);
+            dest.writeInt(views);
+            dest.writeInt(comments);
+            dest.writeString(pageURL);
+            dest.writeInt(imageHeight);
+            dest.writeString(webformatURL);
+            dest.writeString(type);
+            dest.writeInt(previewHeight);
+            dest.writeString(tags);
+            dest.writeInt(downloads);
+            dest.writeString(user);
+            dest.writeInt(favorites);
+            dest.writeInt(imageSize);
+            dest.writeInt(previewWidth);
+            dest.writeString(userImageURL);
+            dest.writeString(previewURL);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<HitsBean> CREATOR = new Creator<HitsBean>() {
+            @Override
+            public HitsBean createFromParcel(Parcel in) {
+                return new HitsBean(in);
+            }
+
+            @Override
+            public HitsBean[] newArray(int size) {
+                return new HitsBean[size];
+            }
+        };
 
         public String getLargeImageURL() {
             return largeImageURL;
