@@ -35,7 +35,7 @@ public class ViewPagerAdapter extends ListAdapter<Pixabay.HitsBean, ViewPagerAda
     public void onBindViewHolder(@NonNull PagerPhotoViewHolder holder, int position) {
         Log.d("watch", "onBindViewHolder:::: " + getItem(position).getPageURL());
         Glide.with(holder.itemView)
-                .load(getItem(position).getPreviewURL())
+                .load(getItem(position).getLargeImageURL())
                 .placeholder(R.drawable.ic_photo_black_24dp)
                 .into(holder.photoView);
     }
